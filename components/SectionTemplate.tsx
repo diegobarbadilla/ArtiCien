@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform } from 'react-native';
 import { Text, TextInput, Button, Card, Divider, useTheme } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 
@@ -36,8 +36,19 @@ export default function SectionTemplate({
     const router = useRouter();
 
     const handleDownload = () => {
-        // In a real app, this would generate a PDF or .docx
-        alert(`Descargando contenido de: ${title}`);
+        if (Platform.OS === 'web') {
+            // Web Download Logic
+            const element = document.createElement("a");
+            const file = new Blob([content], { type: 'text/plain' });
+            element.href = URL.createObjectURL(file);
+            element.download = `${title.replace(/\s+/g, '_')}.txt`;
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        } else {
+            // Mobile Placeholder (Requires expo-file-system / expo-sharing)
+            alert(`Descarga disponible en versión Web. Contenido de: ${title}`);
+        }
     };
 
     return (

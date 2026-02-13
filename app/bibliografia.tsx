@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Platform, Alert } from 'react-native';
 import { Card, Text, Button, List, IconButton, useTheme, Divider } from 'react-native-paper';
 import { useRouter } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
@@ -28,7 +28,11 @@ export default function BibliografiaScreen() {
     };
 
     const handleFinal = () => {
-        alert('Carga de bibliografía finalizada. Puede continuar.');
+        if (Platform.OS === 'web') {
+            window.alert('Carga de bibliografía finalizada. Puede continuar.');
+        } else {
+            Alert.alert('Completado', 'Carga de bibliografía finalizada. Puede continuar.');
+        }
     };
 
     return (
